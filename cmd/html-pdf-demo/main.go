@@ -12,7 +12,20 @@ type Translation struct {
 	CompanyName string
 }
 
+type Package struct {
+	Order uint8
+	Name  string
+	Price string
+}
+
+type Order struct {
+	Packages []Package
+}
+
 type Content struct {
+	PolicyHolder string
+	// Order              Order
+	Packages           []Package
 	Language           string
 	LeadID             string
 	Date               string
@@ -31,7 +44,7 @@ type Content struct {
 	PromptPay          string
 	AuthorizedPerson   string
 	CompanyName        string
-	PaymentReceiptData Translation
+	PaymentReceiptData map[string]interface{}
 }
 
 func main() {
@@ -74,27 +87,39 @@ func main() {
 	// 	// PromptPay:        "checked",
 	// }
 
+	p1 := Package{Order: 1, Price: "10000", Name: "Full-Stack Developer"}
+	p2 := Package{Order: 2, Price: "7000", Name: "Back-end Developer"}
+	p3 := Package{Order: 3, Price: "7000", Name: "Back-end Developer"}
+
 	englishData := Content{
-		Language:         "en",
-		LeadID:           "L9852803",
-		Date:             "15/06/2022",
-		InsuredPerson:    "Insured name",
-		InsurerName:      "Bangkok Insurance Public Company Limited",
-		PackageOrder:     "1",
-		InsuranceKind:    "Voluntary Insurance\nType 3\nThird party coverage",
-		PackagePrice:     "1,000,000",
-		NetPremium:       "1,000",
-		Vat:              "10%",
-		TotalDiscount:    "0",
-		TotalPremium:     "0",
-		Note:             "This document is a temporary receipt document only.",
-		PaymentMethod:    "Credit / Debit Card PromptPay QR",
-		CreditCard:       "checked",
-		PromptPay:        "",
-		AuthorizedPerson: "",
-		PaymentReceiptData: Translation{
-			CompanyName: "abcdef",
+		PolicyHolder: "Hein",
+		// Order: Order{
+		// 	Packages: []Package{p1, p2},
+		// },
+		Packages: []Package{
+			p1,
+			p2,
+			p3,
 		},
+		Language:           "en",
+		LeadID:             "L9852803",
+		Date:               "15/06/2022",
+		InsuredPerson:      "Insured name",
+		InsurerName:        "Bangkok Insurance Public Company Limited",
+		PackageOrder:       "1",
+		InsuranceKind:      "Voluntary Insurance\nType 3\nThird party coverage",
+		PackagePrice:       "1,000,000",
+		NetPremium:         "1,000",
+		Vat:                "10%",
+		TotalDiscount:      "0",
+		TotalPremium:       "0",
+		Note:               "This document is a temporary receipt document only.",
+		PaymentMethod:      "Credit / Debit Card PromptPay QR",
+		CreditCard:         "checked",
+		PromptPay:          "",
+		AuthorizedPerson:   "",
+		CompanyName:        "",
+		PaymentReceiptData: map[string]interface{}{"PolicyHolder": "Hein"},
 	}
 
 	if err := r.ParseTemplate("templates/eng-receipt/index.html", englishData); err == nil {
